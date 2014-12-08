@@ -1,42 +1,26 @@
-### Eclipse ###
-.classpath
-.project
-.settings
-.sonar4clipse
-*.sonar4clipseExternals
-
-### Linux ###
-.*
-!.gitignore
-*~
-
-### Java ###
-*.class
-
-### IntelliJ ###
-*.iml
-*.ipr
-*.iws
-.idea/
-rebel.xml
-
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-### Build ###
 target/
-.springBeans
-/build
+komea-product/komea-admin-webgui/komea_err.log
+komea-product/komea-admin-webgui/.komea/
+.nb-gradle-properties
+.settings
+.classpath
+.nb-gradle/
+.project
+*.versionsBackup
+*~
+.cache
+komea.log
+log.txt
+*.orig
+/komea-gui/komea-portlets/nb-configuration.xml
+/komea-gui/komea-tv/nbactions.xml
+.ehcache
+/documentation/.nb-gradle/private/
+/komea-kpis/komea.log
+.gradle
 build
-/bin
-bin/
-
-### UI build files ###
-bower_components
-node_modules
-
-##Netbeans IDE
-nb-configuration.xml
+komea_err.log
+spring.log
+komea.log
+bin
+.komea
