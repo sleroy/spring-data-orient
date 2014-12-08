@@ -10,8 +10,10 @@ import org.slf4j.LoggerFactory;
 import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 import com.orientechnologies.orient.core.db.ODatabase;
 import com.orientechnologies.orient.core.db.ODatabaseInternal;
-import com.orientechnologies.orient.core.db.ODatabasePoolBase;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
+import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
+import com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 
 /**
  * A base factory for creating {@link ODatabase} objects.
@@ -21,14 +23,15 @@ import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
  * @param <TDatabase>
  *            the type of database to handle
  */
-public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseInternal<?>, P extends ODatabasePoolBase<TDatabase>>
-implements Closeable {
+public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseInternal<?>> implements Closeable {
 
-	private P	                  pool;
+	protected final OPartitionedDatabasePoolFactory	POOL_FACTORY	= new OPartitionedDatabasePoolFactory();
+	private OPartitionedDatabasePool	            pool;
 
-	private TDatabase	          db;
+	private ODatabaseDocumentTx	                    db;
 
-	protected static final Logger	LOGGER	= LoggerFactory.getLogger(AbstractOrientDatabaseFactory.class);
+	protected static final Logger	                LOGGER	     = LoggerFactory
+	                                                                     .getLogger(AbstractOrientDatabaseFactory.class);
 
 	public AbstractOrientDatabaseFactory() {
 		super();
@@ -56,17 +59,17 @@ implements Closeable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#openDatabase
 	 * ()
 	 */
 	public final TDatabase getOrCreateDatabaseSession() {
 		this.db = this.pool.acquire();
-		return this.db;
+		return (TDatabase) this.db;
 	}
 
-	public P getPool() {
+	public OPartitionedDatabasePool getPool() {
 		return this.pool;
 	}
 
@@ -74,7 +77,7 @@ implements Closeable {
 	public void init(final DatabaseConfiguration _configuration) {
 
 		Validate.notNull(_configuration, "A database configuration is required");
-
+		this.POOL_FACTORY.setMaxPoolSize(_configuration.getMaxPoolSize());
 		OGlobalConfiguration.setConfiguration(_configuration.getExtraConfiguration());
 		LOGGER.debug("Accessing to the database in{} ", _configuration.getUrl());
 		final ODatabase createdDB = this.newDatabase(_configuration);
@@ -83,7 +86,7 @@ implements Closeable {
 		this.createPool(_configuration);
 	}
 
-	public void setPool(final P pool) {
+	public void setPool(final OPartitionedDatabasePool pool) {
 		this.pool = pool;
 	}
 
@@ -107,18 +110,24 @@ implements Closeable {
 	}
 
 	protected void createPool(final DatabaseConfiguration _configuration) {
-		this.pool = this.doCreatePool(_configuration);
 		LOGGER.debug("Configuration of the connexion pool min={}, max={}", _configuration.getMinPoolSize(),
-				_configuration.getMaxPoolSize());
-		this.pool.setup(_configuration.getMinPoolSize(), _configuration.getMaxPoolSize());
+		        _configuration.getMaxPoolSize());
+		this.pool = this.doCreatePool(_configuration);
+
 	}
 
-	/**
-	 * Do create pool.
-	 *
-	 * @return the database pool base
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#doCreatePool
+	 * ()
 	 */
-	protected abstract P doCreatePool(DatabaseConfiguration _configuration);
+	protected final OPartitionedDatabasePool doCreatePool(final DatabaseConfiguration _configuration) {
+
+		return this.POOL_FACTORY.get(_configuration.getUrl(), _configuration.getUsername(),
+				_configuration.getPassword());
+	}
 
 	protected abstract TDatabase newDatabase(DatabaseConfiguration _configuration);
 

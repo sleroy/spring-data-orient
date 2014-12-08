@@ -2,7 +2,6 @@ package org.springframework.orientdb.session.impl;
 
 import org.springframework.orientdb.orm.session.IDocumentSessionFactory;
 
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 
 /**
@@ -12,8 +11,8 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
  * @author Dzmitry_Naskou
  * @see ODatabaseDocumentTx
  */
-public class OrientDocumentDatabaseFactory extends
-AbstractOrientDatabaseFactory<ODatabaseDocumentTx, ODatabaseDocumentPool> implements IDocumentSessionFactory {
+public class OrientDocumentDatabaseFactory extends AbstractOrientDatabaseFactory<ODatabaseDocumentTx> implements
+IDocumentSessionFactory {
 
 	public OrientDocumentDatabaseFactory() {
 		super();
@@ -21,19 +20,6 @@ AbstractOrientDatabaseFactory<ODatabaseDocumentTx, ODatabaseDocumentPool> implem
 
 	public OrientDocumentDatabaseFactory(final DatabaseConfiguration _configuration) {
 		super(_configuration);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#doCreatePool
-	 * ()
-	 */
-	@Override
-	protected ODatabaseDocumentPool doCreatePool(final DatabaseConfiguration _configuration) {
-		return new ODatabaseDocumentPool(_configuration.getUrl(), _configuration.getUsername(),
-				_configuration.getPassword());
 	}
 
 	/*
