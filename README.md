@@ -1,5 +1,7 @@
 spring-data-orient
 ==================
+[![Build Status](https://travis-ci.org/sleroy/spring-data-orient.svg?branch=master)](https://travis-ci.org/sleroy/spring-data-orient)
+
 
 Spring Data implementation for OrientDB
 
