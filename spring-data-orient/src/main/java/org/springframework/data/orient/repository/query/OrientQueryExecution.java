@@ -166,11 +166,11 @@ public abstract class OrientQueryExecution {
         }
     }
     
-    Object[] prepareParameters(OrientParameters parameters, Object[] values) {
+    Object[] prepareParameters(OrientParameters _parameters, Object[] values) {
         int index = 0;
         List<Object> params = new ArrayList<Object>();
         
-        for (OrientParameter parameter : parameters) {
+        for (OrientParameter parameter : _parameters) {
             if (parameter.isBindable()) {
                 params.add(values[index]);
             }

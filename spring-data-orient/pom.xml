@@ -13,6 +13,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>orient-connector</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!--ORIENTDB -->
 		<dependency>
 			<groupId>com.orientechnologies</groupId>

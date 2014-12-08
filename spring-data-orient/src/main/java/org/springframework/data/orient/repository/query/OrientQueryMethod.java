@@ -40,8 +40,8 @@ public final class OrientQueryMethod extends QueryMethod {
      * @see org.springframework.data.repository.query.QueryMethod#createParameters(java.lang.reflect.Method)
      */
     @Override
-    protected OrientParameters createParameters(Method method) {
-        return new OrientParameters(method);
+    protected OrientParameters createParameters(Method _method) {
+        return new OrientParameters(_method);
     }
 
     @Override

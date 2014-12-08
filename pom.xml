@@ -4,15 +4,32 @@
 	<groupId>org.komea</groupId>
 	<artifactId>orient-database-utils</artifactId>
 	<version>0.0.9-SNAPSHOT</version>
-
+	<packaging>pom</packaging>
 	<properties>
 		<spring.version>4.1.0.RELEASE</spring.version>
 		<spring.boot.version>1.1.9.RELEASE</spring.boot.version>
 		<orientdb.version>2.0-M3</orientdb.version>
 		<spring.data.commons.version>1.9.1.RELEASE</spring.data.commons.version>
 		<jooq.version>3.3.2</jooq.version>
-                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4j.version>1.7.7</slf4j.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<commonlang.version>3.3.2</commonlang.version>
 	</properties>
+
+	<scm>
+		<connection>scm:git:https://github.com/sleroy/spring-data-orient.git</connection>
+		<developerConnection>scm:git:git@github.com:sleroy/spring-data-orient.git</developerConnection>
+		<url>https://github.com/sleroy/spring-data-orient</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/sleroy/maven/spring-data-orient</url>			
+			
+		</repository>
+	</distributionManagement>
 
 
 	<dependencyManagement>
@@ -26,10 +43,20 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-        
+
 	<build>
 
 		<plugins>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -52,29 +79,63 @@
 					</execution>
 				</executions>
 			</plugin>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>cobertura-maven-plugin</artifactId>
-                            <version>2.6</version>
-                            <configuration>
-                                <format>xml</format>
-                                <maxmem>256m</maxmem>
-                                <!-- aggregated reports for multi-module projects -->
-                                <aggregate>true</aggregate>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.eluder.coveralls</groupId>
-                            <artifactId>coveralls-maven-plugin</artifactId>
-                            <version>3.0.1</version>
-                            <configuration>
-                                <repoToken>ieba8Bqvrqoce9tR3mJFuQqvih3UXQE4y</repoToken>
-                            </configuration>
-                        </plugin>			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<format>xml</format>
+					<maxmem>256m</maxmem>
+					<!-- aggregated reports for multi-module projects -->
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<repoToken>ieba8Bqvrqoce9tR3mJFuQqvih3UXQE4y</repoToken>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-	<packaging>pom</packaging>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
+
 	<modules>
 		<module>orient-connector</module>
 		<module>spring-data-orient</module>

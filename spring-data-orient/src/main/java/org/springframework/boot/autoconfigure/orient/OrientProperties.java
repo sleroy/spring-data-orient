@@ -1,59 +1,59 @@
 package org.springframework.boot.autoconfigure.orient;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.orm.orient.AbstractOrientDatabaseFactory;
+import org.springframework.orientdb.session.impl.DatabaseConfiguration;
 
 @ConfigurationProperties(prefix = "spring.data.orient")
 public class OrientProperties {
 
-    private String url;
-    
-    private String username;
-    
-    private String password;
-    
-    private int minPoolSize = AbstractOrientDatabaseFactory.DEFAULT_MIN_POOL_SIZE;
-    
-    private int maxPoolSize = AbstractOrientDatabaseFactory.DEFAULT_MAX_POOL_SIZE;
+	private String	url;
 
-    public String getUrl() {
-        return url;
-    }
+	private String	username;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	private String	password;
 
-    public String getUsername() {
-        return username;
-    }
+	private int	   minPoolSize	= DatabaseConfiguration.DEFAULT_MIN_POOL_SIZE;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	private int	   maxPoolSize	= DatabaseConfiguration.DEFAULT_MAX_POOL_SIZE;
 
-    public String getPassword() {
-        return password;
-    }
+	public int getMaxPoolSize() {
+		return this.maxPoolSize;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public int getMinPoolSize() {
+		return this.minPoolSize;
+	}
 
-    public int getMinPoolSize() {
-        return minPoolSize;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public void setMinPoolSize(int minPoolSize) {
-        this.minPoolSize = minPoolSize;
-    }
+	public String getUrl() {
+		return this.url;
+	}
 
-    public int getMaxPoolSize() {
-        return maxPoolSize;
-    }
+	public String getUsername() {
+		return this.username;
+	}
 
-    public void setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
-    }
+	public void setMaxPoolSize(final int maxPoolSize) {
+		this.maxPoolSize = maxPoolSize;
+	}
+
+	public void setMinPoolSize(final int minPoolSize) {
+		this.minPoolSize = minPoolSize;
+	}
+
+	public void setPassword(final String password) {
+		this.password = password;
+	}
+
+	public void setUrl(final String url) {
+		this.url = url;
+	}
+
+	public void setUsername(final String username) {
+		this.username = username;
+	}
 
 }

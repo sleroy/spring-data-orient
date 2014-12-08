@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.orient.core.OrientObjectOperations;
-import org.springframework.orm.orient.OrientObjectDatabaseFactory;
+import org.springframework.orientdb.session.impl.OrientObjectDatabaseFactory;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,43 +24,43 @@ import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 @SpringApplicationConfiguration(classes = OrientOperationUtilTest.class)
 public class OrientOperationUtilTest extends AbstractTestNGSpringContextTests {
 
-    @Autowired
-    OrientObjectOperations template;
+	@Autowired
+	OrientObjectOperations	    template;
 
-    @Autowired
-    OrientObjectDatabaseFactory factory;
-    
-    @BeforeClass
-    public void before() {
-        try (OObjectDatabaseTx db = factory.openDatabase()) {
-            db.getEntityManager().registerEntityClass(Employee.class);
-        }
-    }
+	@Autowired
+	OrientObjectDatabaseFactory	factory;
 
-    @Test
-    public void getRidTest(){
-        Address address = new Address();
-        Assert.assertNull(template.getRid(address));
+	@BeforeClass
+	public void before() {
+		try (OObjectDatabaseTx db = this.factory.getOrCreateDatabaseSession()) {
+			db.getEntityManager().registerEntityClass(Employee.class);
+		}
+	}
 
-        address.setId("123");
-        Assert.assertEquals(template.getRid(address), "123");
-    }
+	@Test
+	public void getRidFromParentTest() {
+		final Employee employee = new Employee();
+		Assert.assertNull(this.template.getRid(employee));
 
-    @Test
-    public void getRidFromParentTest(){
-        Employee employee = new Employee();
-        Assert.assertNull(template.getRid(employee));
+		employee.setRid("123");
+		Assert.assertEquals(this.template.getRid(employee), "123");
+	}
 
-        employee.setRid("123");
-        Assert.assertEquals(template.getRid(employee), "123");
-    }
+	@Test
+	public void getRidFromProxy() {
+		final Employee employee = new Employee();
+		final Employee savedEmployee = this.template.save(employee);
 
-    @Test
-    public void getRidFromProxy(){
-        Employee employee = new Employee();
-        Employee savedEmployee = template.save(employee);
-        
-        Assert.assertNotSame(savedEmployee.getClass(), Employee.class);
-        Assert.assertEquals(template.getRid(savedEmployee), savedEmployee.getRid());
-    }
+		Assert.assertNotSame(savedEmployee.getClass(), Employee.class);
+		Assert.assertEquals(this.template.getRid(savedEmployee), savedEmployee.getRid());
+	}
+
+	@Test
+	public void getRidTest() {
+		final Address address = new Address();
+		Assert.assertNull(this.template.getRid(address));
+
+		address.setId("123");
+		Assert.assertEquals(this.template.getRid(address), "123");
+	}
 }

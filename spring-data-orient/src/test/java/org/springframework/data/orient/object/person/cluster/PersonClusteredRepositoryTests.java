@@ -1,109 +1,108 @@
 package org.springframework.data.orient.object.person.cluster;
 
-
-import com.orientechnologies.orient.core.metadata.schema.OClass;
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.orient.core.OrientObjectOperations;
 import org.springframework.data.orient.repository.DefaultCluster;
-import org.springframework.orm.orient.OrientObjectDatabaseFactory;
+import org.springframework.orientdb.session.impl.OrientObjectDatabaseFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.test.data.Person;
 import org.testng.annotations.Test;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+
 @TransactionConfiguration(defaultRollback = false)
 @ContextConfiguration(classes = PersonClusteredRepositoryTestConfiguration.class)
 public class PersonClusteredRepositoryTests extends AbstractTestNGSpringContextTests {
 
-    @Autowired
-    OrientObjectDatabaseFactory dbf;
+	@Autowired
+	OrientObjectDatabaseFactory	dbf;
 
-    @Autowired
-    PersonClusteredRepository repository;
+	@Autowired
+	PersonClusteredRepository	repository;
 
-    @Autowired
-    @Qualifier("personClusterTemplate")
-    OrientObjectOperations operations;
+	@Autowired
+	@Qualifier("personClusterTemplate")
+	OrientObjectOperations	    operations;
 
-    @Test
-    public void findAll() {
-        System.out.println(repository.findAll());
-    }
+	@Test
+	public void checkClasses() {
+		final OObjectDatabaseTx db = this.dbf.getOrCreateDatabaseSession();
 
-    @Test
-    public void findAll2() {
-        for (Person person : repository.findAll()) {
-            System.out.println(operations.getClusterNameByRid(person.getRid()));
-        }
-    }
+		for (final OClass c : db.getMetadata().getSchema().getClasses()) {
+			System.out.println(c);
+		}
 
-    @Test
-    public void savePersonToDefaultClusterTest() {
-        Person person = new Person();
-        person.setFirstName("Ivan");
-        person.setLastName("Ivanou");
+		db.close();
+	}
 
-        repository.save(person);
-    }
+	@Test
+	public void checkClusters() {
+		final OObjectDatabaseTx db = this.dbf.getOrCreateDatabaseSession();
 
-    @Test
-    public void savePersonToClusterTest() {
-        Person person = new Person();
-        person.setFirstName("Dzmitry");
-        person.setLastName("Naskou");
+		for (final String cluster : db.getClusterNames()) {
+			System.out.println(cluster);
+		}
 
-        repository.save(person, "person_temp");
-    }
+		db.close();
+	}
 
-    @Test
-    public void findAllByCluster() {
-        System.out.println(repository.findAll("person_temp"));
-    }
+	@Test
+	public void findAll() {
+		System.out.println(this.repository.findAll());
+	}
 
-    @Test
-    public void findByLastNameTest() {
-        System.out.println(repository.findByLastName("Naskou"));
-    }
+	@Test
+	public void findAll2() {
+		for (final Person person : this.repository.findAll()) {
+			System.out.println(this.operations.getClusterNameByRid(person.getRid()));
+		}
+	}
 
-    @Test
-    public void checkClasses() {
-        OObjectDatabaseTx db = dbf.openDatabase();
+	@Test
+	public void findAllByCluster() {
+		System.out.println(this.repository.findAll("person_temp"));
+	}
 
-        for (OClass c : db.getMetadata().getSchema().getClasses()) {
-            System.out.println(c);
-        }
+	@Test
+	public void findByFirstNameByCluster() {
+		this.repository.findByFirstName("Dzmitry", new DefaultCluster("person_temp"));
+	}
 
-        db.close();
-    }
+	@Test
+	public void findByLastNameTest() {
+		System.out.println(this.repository.findByLastName("Naskou"));
+	}
 
-    @Test
-    public void checkClusters() {
-        OObjectDatabaseTx db = dbf.openDatabase();
+	@Test
+	public void getPersonClusters() {
+		final OObjectDatabaseTx db = this.dbf.getOrCreateDatabaseSession();
 
-        for (String cluster : db.getClusterNames()) {
-            System.out.println(cluster);
-        }
+		for (final int i : db.getMetadata().getSchema().getClass(Person.class).getClusterIds()) {
+			System.out.println(i);
+		}
 
-        db.close();
-    }
+		db.close();
+	}
 
-    @Test
-    public void getPersonClusters() {
-        OObjectDatabaseTx db = dbf.openDatabase();
+	@Test
+	public void savePersonToClusterTest() {
+		final Person person = new Person();
+		person.setFirstName("Dzmitry");
+		person.setLastName("Naskou");
 
-        for (int i : db.getMetadata().getSchema().getClass(Person.class).getClusterIds()) {
-            System.out.println(i);
-        }
+		this.repository.save(person, "person_temp");
+	}
 
+	@Test
+	public void savePersonToDefaultClusterTest() {
+		final Person person = new Person();
+		person.setFirstName("Ivan");
+		person.setLastName("Ivanou");
 
-        db.close();
-    }
-
-    @Test
-    public void findByFirstNameByCluster() {
-        repository.findByFirstName("Dzmitry", new DefaultCluster("person_temp"));
-    }
+		this.repository.save(person);
+	}
 }

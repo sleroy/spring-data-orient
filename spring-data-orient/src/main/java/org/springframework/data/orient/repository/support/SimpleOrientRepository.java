@@ -165,7 +165,7 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @see org.springframework.data.orient.repository.OrientRepository#findAll(java.lang.Class)
      */
     @Override
-    public <S extends T> List<S> findAll(Class<S> domainClass) {
+    public <S extends T> List<S> findAll(Class<S> _domainClass) {
         return null;
     }
 
@@ -181,8 +181,8 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @see org.springframework.data.orient.repository.OrientRepository#findAll(org.springframework.data.orient.repository.Source)
      */
     @Override
-    public List<T> findAll(OrientSource source) {
-        return operations.query(getQuery(QueryUtils.toSource(source), (Sort) null));
+    public List<T> findAll(OrientSource orientSource) {
+        return operations.query(getQuery(QueryUtils.toSource(orientSource), (Sort) null));
     }
 
     /* (non-Javadoc)
@@ -213,18 +213,18 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @see org.springframework.data.orient.repository.OrientRepository#count(java.lang.Class)
      */
     @Override
-    public long count(Class<? extends T> domainClass) {
-        return operations.countClass(domainClass);
+    public long count(Class<? extends T> _domainClass) {
+        return operations.countClass(_domainClass);
     }
 
     /* (non-Javadoc)
      * @see org.springframework.data.orient.repository.OrientRepository#count(org.springframework.data.orient.repository.OrientSource)
      */
     @Override
-    public long count(OrientSource source) {
-        switch (source.getSourceType()) {
-            case CLUSTER: return count(source.getName());
-            case CLASS: return operations.countClass(source.getName());
+    public long count(OrientSource _source) {
+        switch (_source.getSourceType()) {
+            case CLUSTER: return count(_source.getName());
+            case CLASS: return operations.countClass(_source.getName());
             default: throw new IllegalArgumentException();
         }
     }
@@ -279,8 +279,8 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
      * @see org.springframework.data.orient.repository.OrientRepository#deleteAll(java.lang.Class)
      */
     @Override
-    public void deleteAll(Class<? extends T> domainClass) {
-        for (T entity : findAll(domainClass)) {
+    public void deleteAll(Class<? extends T> _domainClass) {
+        for (T entity : findAll(_domainClass)) {
             operations.delete(entity);
         }
     }
@@ -334,12 +334,12 @@ public class SimpleOrientRepository<T> implements OrientRepository<T> {
     /**
      * Creates the query for the given {@link OrientSource} and {@link Sort}.
      *
-     * @param source the source
-     * @param sort the sort
+     * @param _source the source
+     * @param _sort the sort
      * @return the query
      */
-    private OSQLQuery<T> getQuery(String source, Sort sort) {
-        Query query = DSL.using(SQLDialect.MYSQL).select().from(source).orderBy(QueryUtils.toOrders(sort));
+    private OSQLQuery<T> getQuery(String _source, Sort _sort) {
+        Query query = DSL.using(SQLDialect.MYSQL).select().from(_source).orderBy(QueryUtils.toOrders(_sort));
 
         return new OSQLSynchQuery<T>(query.getSQL(ParamType.INLINED));
     }
