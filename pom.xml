@@ -11,6 +11,7 @@
 		<orientdb.version>2.0-M3</orientdb.version>
 		<spring.data.commons.version>1.9.1.RELEASE</spring.data.commons.version>
 		<jooq.version>3.3.2</jooq.version>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 
@@ -25,8 +26,9 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+        
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -66,28 +68,9 @@
                             <artifactId>coveralls-maven-plugin</artifactId>
                             <version>3.0.1</version>
                             <configuration>
-                                <repoToken>yourcoverallsprojectrepositorytoken</repoToken>
+                                <repoToken>ieba8Bqvrqoce9tR3mJFuQqvih3UXQE4y</repoToken>
                             </configuration>
                         </plugin>			
-			<plugin>
-    <groupId>com.github.timurstrekalov</groupId>
-    <artifactId>saga-maven-plugin</artifactId>
-    <version>1.5.2</version>
-    <executions>
-        <execution>
-            <goals>
-                <goal>coverage</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration>
-        <baseDir>http://localhost:${jasmine.serverPort}</baseDir>
-        <outputDir>${project.build.directory}/saga-coverage</outputDir>
-        <noInstrumentPatterns>
-            <pattern>.*/spec/.*</pattern>
-        </noInstrumentPatterns>
-    </configuration>
-</plugin>
 		</plugins>
 	</build>
 

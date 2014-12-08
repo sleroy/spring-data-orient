@@ -2,6 +2,9 @@ spring-data-orient
 ==================
 [![Build Status](https://travis-ci.org/sleroy/spring-data-orient.svg?branch=master)](https://travis-ci.org/sleroy/spring-data-orient)
 
+[![Coverage Status](https://img.shields.io/coveralls/sleroy/spring-data-orient.svg)](https://coveralls.io/r/sleroy/spring-data-orient)
+
+
 
 Spring Data implementation for OrientDB
 
