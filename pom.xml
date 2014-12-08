@@ -50,6 +50,44 @@
 					</execution>
 				</executions>
 			</plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>cobertura-maven-plugin</artifactId>
+                            <version>2.6</version>
+                            <configuration>
+                                <format>xml</format>
+                                <maxmem>256m</maxmem>
+                                <!-- aggregated reports for multi-module projects -->
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.eluder.coveralls</groupId>
+                            <artifactId>coveralls-maven-plugin</artifactId>
+                            <version>3.0.1</version>
+                            <configuration>
+                                <repoToken>yourcoverallsprojectrepositorytoken</repoToken>
+                            </configuration>
+                        </plugin>			
+			<plugin>
+    <groupId>com.github.timurstrekalov</groupId>
+    <artifactId>saga-maven-plugin</artifactId>
+    <version>1.5.2</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>coverage</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <baseDir>http://localhost:${jasmine.serverPort}</baseDir>
+        <outputDir>${project.build.directory}/saga-coverage</outputDir>
+        <noInstrumentPatterns>
+            <pattern>.*/spec/.*</pattern>
+        </noInstrumentPatterns>
+    </configuration>
+</plugin>
 		</plugins>
 	</build>
 
