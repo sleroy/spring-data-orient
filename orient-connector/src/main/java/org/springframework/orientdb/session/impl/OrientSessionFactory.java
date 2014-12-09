@@ -13,7 +13,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraph;
  * @see ODatabaseDocumentTx
  */
 public class OrientSessionFactory extends AbstractOrientDatabaseFactory<ODatabaseDocumentTx> implements
-        IOrientSessionFactory {
+IOrientSessionFactory {
 
 	public OrientSessionFactory() {
 		super();
@@ -25,7 +25,7 @@ public class OrientSessionFactory extends AbstractOrientDatabaseFactory<ODatabas
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.komea.product.eventory.database.conf.IOrientDbGraphSessionFactory
 	 * #getGraph()
@@ -39,7 +39,7 @@ public class OrientSessionFactory extends AbstractOrientDatabaseFactory<ODatabas
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.komea.product.eventory.database.conf.IOrientDbGraphSessionFactory
 	 * #getGraph()
@@ -53,7 +53,7 @@ public class OrientSessionFactory extends AbstractOrientDatabaseFactory<ODatabas
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#newDatabase
 	 * ()
