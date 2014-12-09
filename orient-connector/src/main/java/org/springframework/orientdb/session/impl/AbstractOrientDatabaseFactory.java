@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 import com.orientechnologies.orient.core.db.ODatabase;
-import com.orientechnologies.orient.core.db.ODatabaseInternal;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
-import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
-import com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 
 /**
@@ -23,15 +21,13 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
  * @param <TDatabase>
  *            the type of database to handle
  */
-public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseInternal<?>> implements Closeable {
+public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseDocumentTx> implements Closeable {
+	protected static final Logger	               LOGGER	= LoggerFactory
+	                                                              .getLogger(AbstractOrientDatabaseFactory.class);
 
-	protected final OPartitionedDatabasePoolFactory	POOL_FACTORY	= new OPartitionedDatabasePoolFactory();
-	private OPartitionedDatabasePool	            pool;
+	private final ThreadLocal<ODatabaseDocumentTx>	db	  = new ThreadLocal<>();
 
-	private ODatabaseDocumentTx	                    db;
-
-	protected static final Logger	                LOGGER	     = LoggerFactory
-	                                                                     .getLogger(AbstractOrientDatabaseFactory.class);
+	private ODatabaseDocumentPool	               pool;
 
 	public AbstractOrientDatabaseFactory() {
 		super();
@@ -48,8 +44,8 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseI
 			this.pool.close();
 		}
 		LOGGER.trace("Closing database connection");
-		if (this.db != null) {
-			this.db.close();
+		if (this.db.get() != null) {
+			this.db.get().close();
 		}
 	}
 
@@ -59,17 +55,17 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseI
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#openDatabase
 	 * ()
 	 */
 	public final TDatabase getOrCreateDatabaseSession() {
-		this.db = this.pool.acquire();
-		return (TDatabase) this.db;
+		this.db.set(this.pool.acquire());
+		return (TDatabase) this.db.get();
 	}
 
-	public OPartitionedDatabasePool getPool() {
+	public ODatabaseDocumentPool getPool() {
 		return this.pool;
 	}
 
@@ -77,7 +73,6 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseI
 	public void init(final DatabaseConfiguration _configuration) {
 
 		Validate.notNull(_configuration, "A database configuration is required");
-		this.POOL_FACTORY.setMaxPoolSize(_configuration.getMaxPoolSize());
 		OGlobalConfiguration.setConfiguration(_configuration.getExtraConfiguration());
 		LOGGER.debug("Accessing to the database in{} ", _configuration.getUrl());
 		final ODatabase createdDB = this.newDatabase(_configuration);
@@ -86,47 +81,47 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseI
 		this.createPool(_configuration);
 	}
 
-	public void setPool(final OPartitionedDatabasePool pool) {
+	public void setPool(final ODatabaseDocumentPool pool) {
 		this.pool = pool;
 	}
 
-	private boolean isRemoteDatabaseUrl(final DatabaseConfiguration _configuration) {
-		return _configuration.getUrl().startsWith("remote:");
-	}
-
-	protected void createDatabase(final ODatabase _database, final DatabaseConfiguration _configuration) {
+	/**
+	 * Initializes the database.
+	 *
+	 * @param _database
+	 * @param _configuration
+	 */
+	private final void createDatabase(final ODatabase _database, final DatabaseConfiguration _configuration) {
 		if (!this.isRemoteDatabaseUrl(_configuration)) {
 
 			if (!_database.exists()) {
 				LOGGER.trace("Creating local database");
 				_database.create();
-				_database.close();
 			} else {
 				LOGGER.trace("Reusing local database");
 			}
 		} else {
 			LOGGER.debug("Working on a remote database");
 		}
+		_database.close();
 	}
 
-	protected void createPool(final DatabaseConfiguration _configuration) {
-		LOGGER.debug("Configuration of the connexion pool min={}, max={}", _configuration.getMinPoolSize(),
-		        _configuration.getMaxPoolSize());
-		this.pool = this.doCreatePool(_configuration);
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#doCreatePool
-	 * ()
+	/**
+	 * Creates the connexion pool.
+	 *
+	 * @param _configuration
+	 *            the database configuration
 	 */
-	protected final OPartitionedDatabasePool doCreatePool(final DatabaseConfiguration _configuration) {
-
-		return this.POOL_FACTORY.get(_configuration.getUrl(), _configuration.getUsername(),
+	private final void createPool(final DatabaseConfiguration _configuration) {
+		LOGGER.debug("Configuration of the connexion pool min={}, max={}", _configuration.getMinPoolSize(),
+				_configuration.getMaxPoolSize());
+		this.pool = new ODatabaseDocumentPool(_configuration.getUrl(), _configuration.getUsername(),
 				_configuration.getPassword());
+
+	}
+
+	private boolean isRemoteDatabaseUrl(final DatabaseConfiguration _configuration) {
+		return _configuration.getUrl().startsWith("remote:");
 	}
 
 	protected abstract TDatabase newDatabase(DatabaseConfiguration _configuration);
