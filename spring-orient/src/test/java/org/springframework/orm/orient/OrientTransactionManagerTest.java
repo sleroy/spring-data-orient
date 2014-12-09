@@ -5,7 +5,6 @@ package org.springframework.orm.orient;
 
 import org.springframework.orientdb.session.impl.OrientSessionFactory;
 import org.springframework.orientdb.session.impl.TestDatabaseConfiguration;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.testng.annotations.Test;
 
@@ -50,17 +49,10 @@ public class OrientTransactionManagerTest {
 	public void testOrientTransactionManager_failSchemaTransaction() throws Exception {
 		try (final OrientSessionFactory osf = new OrientSessionFactory(new TestDatabaseConfiguration())) {
 			final OrientTransactionManager orientTransactionManager = new OrientTransactionManager(osf);
-			final TransactionStatus transaction = orientTransactionManager
-			        .getTransaction(new DefaultTransactionAttribute());
+			orientTransactionManager.getTransaction(new DefaultTransactionAttribute());
 
 			final OrientGraph graph = osf.getGraph();
-			final OrientVertex luke = graph.addVertex(null);
-			final OrientVertex darthVader = graph.addVertex(null);
-			graph.addEdge(null, darthVader, luke, "father");
-
-			orientTransactionManager.commit(transaction);
-			graph.commit();
-			graph.shutdown();
+			graph.addVertex(null);
 
 		}
 
