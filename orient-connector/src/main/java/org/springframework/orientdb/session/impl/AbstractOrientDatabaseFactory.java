@@ -55,7 +55,7 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseD
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#openDatabase
 	 * ()
@@ -79,6 +79,10 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseD
 		this.createDatabase(createdDB, _configuration);
 		LOGGER.debug("Creation of the connexion pool {} ", _configuration.getUrl());
 		this.createPool(_configuration);
+		if (_configuration.isAutoInitializeCurrentThreadTransaction()) {
+			LOGGER.warn("Autoinitialize the database for the current thread");
+			this.getOrCreateDatabaseSession();
+		}
 	}
 
 	public void setPool(final ODatabaseDocumentPool pool) {
@@ -114,9 +118,9 @@ public abstract class AbstractOrientDatabaseFactory<TDatabase extends ODatabaseD
 	 */
 	private final void createPool(final DatabaseConfiguration _configuration) {
 		LOGGER.debug("Configuration of the connexion pool min={}, max={}", _configuration.getMinPoolSize(),
-				_configuration.getMaxPoolSize());
+		        _configuration.getMaxPoolSize());
 		this.pool = new ODatabaseDocumentPool(_configuration.getUrl(), _configuration.getUsername(),
-				_configuration.getPassword());
+		        _configuration.getPassword());
 
 	}
 

@@ -14,6 +14,7 @@ public class TestDatabaseConfiguration extends MemoryDatabaseConfiguration {
 
 	public TestDatabaseConfiguration() {
 		super("database" + Long.toString(new Date().getTime()) + new Random().nextInt());
+		this.setAutoInitializeCurrentThreadTransaction(true);
 	}
 
 }

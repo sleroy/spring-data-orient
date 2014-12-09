@@ -17,10 +17,10 @@ public class DatabaseConfiguration {
 	private String	            url;
 
 	/** Default minimum pool size. */
-	public static final int	    DEFAULT_MIN_POOL_SIZE	= 1;
+	public static final int	    DEFAULT_MIN_POOL_SIZE	               = 1;
 
 	/** Default maximum pool size. */
-	public static final int	    DEFAULT_MAX_POOL_SIZE	= 20;
+	public static final int	    DEFAULT_MAX_POOL_SIZE	               = 20;
 
 	/** The username. */
 	private String	            username;
@@ -29,12 +29,14 @@ public class DatabaseConfiguration {
 	private String	            password;
 
 	/** The min pool size. */
-	private int	                minPoolSize	          = DEFAULT_MIN_POOL_SIZE;
+	private int	                minPoolSize	                           = DEFAULT_MIN_POOL_SIZE;
 
 	/** The max pool size. */
-	private int	                maxPoolSize	          = DEFAULT_MAX_POOL_SIZE;
+	private int	                maxPoolSize	                           = DEFAULT_MAX_POOL_SIZE;
 
-	private Map<String, Object>	extraConfiguration	  = Collections.emptyMap();
+	private boolean	            autoInitializeCurrentThreadTransaction	= false;
+
+	private Map<String, Object>	extraConfiguration	                   = Collections.emptyMap();
 
 	public DatabaseConfiguration() {
 		super();
@@ -64,6 +66,14 @@ public class DatabaseConfiguration {
 		return this.username;
 	}
 
+	public boolean isAutoInitializeCurrentThreadTransaction() {
+		return this.autoInitializeCurrentThreadTransaction;
+	}
+
+	public void setAutoInitializeCurrentThreadTransaction(final boolean _autoInitializeCurrentThreadTransaction) {
+		this.autoInitializeCurrentThreadTransaction = _autoInitializeCurrentThreadTransaction;
+	}
+
 	public void setExtraConfiguration(final Map<String, Object> _extraConfiguration) {
 		this.extraConfiguration = _extraConfiguration;
 	}
@@ -91,6 +101,6 @@ public class DatabaseConfiguration {
 	@Override
 	public String toString() {
 		return "DatabaseConfiguration [url=" + this.url + ", username=" + this.username + ", minPoolSize="
-				+ this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
+		        + this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
 	}
 }
