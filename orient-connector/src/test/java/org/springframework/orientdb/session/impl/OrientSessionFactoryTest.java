@@ -4,13 +4,13 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class OrientGraphDatabaseFactoryTest {
-
+public class OrientSessionFactoryTest {
 	@Test
 	public final void testOrientGraphDatabaseFactory() throws Exception {
-		final OrientGraphDatabaseFactory orientGraphDatabaseFactory = new OrientGraphDatabaseFactory(
+		final OrientSessionFactory orientGraphDatabaseFactory = new OrientSessionFactory(
 		        new TestDatabaseConfiguration());
-		assertNotNull(orientGraphDatabaseFactory.getGraph());
+		assertNotNull(orientGraphDatabaseFactory.getGraphTx());
 		orientGraphDatabaseFactory.close();
 	}
+
 }

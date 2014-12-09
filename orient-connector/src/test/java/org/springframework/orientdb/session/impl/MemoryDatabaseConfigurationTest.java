@@ -12,12 +12,12 @@ public class MemoryDatabaseConfigurationTest {
 	public void testMemoryDatabaseConfiguration() throws Exception {
 
 		// WHEN DOUBLE INIT
-		final OrientDocumentDatabaseFactory documentDatabaseFactory = new OrientDocumentDatabaseFactory(
+		final OrientSessionFactory documentDatabaseFactory = new OrientSessionFactory(
 		        new MemoryDatabaseConfiguration("testDatabase"));
 
 		documentDatabaseFactory.close();
 
-		final OrientDocumentDatabaseFactory documentDatabaseFactory2 = new OrientDocumentDatabaseFactory(
+		final OrientSessionFactory documentDatabaseFactory2 = new OrientSessionFactory(
 		        new MemoryDatabaseConfiguration("testDatabase"));
 
 		documentDatabaseFactory2.close();
@@ -28,7 +28,7 @@ public class MemoryDatabaseConfigurationTest {
 	public void testMemoryDatabaseConfiguration_getAndFail() throws Exception {
 
 		// WHEN DOUBLE INIT
-		final OrientDocumentDatabaseFactory documentDatabaseFactory = new OrientDocumentDatabaseFactory(
+		final OrientSessionFactory documentDatabaseFactory = new OrientSessionFactory(
 		        new MemoryDatabaseConfiguration("testDatabase"));
 
 		assertNotNull(documentDatabaseFactory.db());
@@ -40,7 +40,7 @@ public class MemoryDatabaseConfigurationTest {
 	public void testMemoryDatabaseConfiguration_getOrCreate() throws Exception {
 
 		// WHEN DOUBLE INIT
-		final OrientDocumentDatabaseFactory documentDatabaseFactory = new OrientDocumentDatabaseFactory(
+		final OrientSessionFactory documentDatabaseFactory = new OrientSessionFactory(
 		        new MemoryDatabaseConfiguration("testDatabase"));
 
 		assertNotNull(documentDatabaseFactory.getOrCreateDatabaseSession());

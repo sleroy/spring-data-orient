@@ -138,6 +138,6 @@
 
 	<modules>
 		<module>orient-connector</module>
-		<module>spring-data-orient</module>
+		<module>spring-orient</module>
 	</modules>
 </project>

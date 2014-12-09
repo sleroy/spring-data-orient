@@ -2,7 +2,7 @@ package org.springframework.orm.orient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orientdb.session.impl.AbstractOrientDatabaseFactory;
+import org.springframework.orientdb.orm.session.IOrientSessionFactory;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
@@ -10,7 +10,6 @@ import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.ResourceTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.orientechnologies.orient.core.db.ODatabase;
 import com.orientechnologies.orient.core.db.ODatabaseDocumentInternal;
 import com.orientechnologies.orient.core.db.ODatabaseInternal;
 import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
@@ -23,14 +22,13 @@ import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
  */
 public class OrientTransactionManager extends AbstractPlatformTransactionManager implements ResourceTransactionManager {
 
-	private static final long	                               serialVersionUID	= 1L;
+	private static final long	  serialVersionUID	= 1L;
 
 	/** The logger. */
-	private static Logger	                                   log	            = LoggerFactory
-			.getLogger(OrientTransactionManager.class);
+	private static Logger	      log	           = LoggerFactory.getLogger(OrientTransactionManager.class);
 
 	/** The database factory. */
-	private AbstractOrientDatabaseFactory<? extends ODatabase>	dbf;
+	private IOrientSessionFactory	dbf;
 
 	/**
 	 * Instantiates a new {@link OrientTransactionManager}.
@@ -38,7 +36,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 	 * @param dbf
 	 *            the dbf
 	 */
-	public OrientTransactionManager(final AbstractOrientDatabaseFactory<? extends ODatabase> dbf) {
+	public OrientTransactionManager(final IOrientSessionFactory dbf) {
 		super();
 		this.dbf = dbf;
 	}
@@ -49,7 +47,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 	 *
 	 * @return the database
 	 */
-	public AbstractOrientDatabaseFactory<? extends ODatabase> getDatabaseFactory() {
+	public IOrientSessionFactory getDatabaseFactory() {
 		return this.dbf;
 	}
 
@@ -71,7 +69,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 	 * @param databaseFactory
 	 *            the database to set
 	 */
-	public void setDatabaseManager(final AbstractOrientDatabaseFactory<ODatabaseInternal<?>> databaseFactory) {
+	public void setDatabaseManager(final IOrientSessionFactory databaseFactory) {
 		this.dbf = databaseFactory;
 	}
 

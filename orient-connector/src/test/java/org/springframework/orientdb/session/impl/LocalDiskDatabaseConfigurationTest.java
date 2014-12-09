@@ -18,7 +18,7 @@ public class LocalDiskDatabaseConfigurationTest {
 		assertTrue(this.temporaryFolder.getRoot().exists());
 		System.err.println(tempPath);
 
-		final OrientDocumentDatabaseFactory documentDatabaseFactory = new OrientDocumentDatabaseFactory(
+		final OrientSessionFactory documentDatabaseFactory = new OrientSessionFactory(
 				new LocalDiskDatabaseConfiguration(tempPath, "test"));
 
 		documentDatabaseFactory.close();
