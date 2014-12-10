@@ -87,7 +87,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
 		ODatabaseDocumentTx db = tx.getDatabase();
 		if (db == null || db.isClosed()) {
-			db = this.dbf.getOrCreateDatabaseSession();
+			db = this.dbf.getOrCreateDB();
 			tx.setDatabase(db);
 			TransactionSynchronizationManager.bindResource(this.dbf, db);
 		}

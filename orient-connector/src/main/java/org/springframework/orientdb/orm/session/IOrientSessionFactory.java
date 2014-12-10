@@ -34,6 +34,6 @@ public interface IOrientSessionFactory extends Closeable {
 	 * pool of connexion. Don't forget to close the resource with the close()
 	 * method.
 	 */
-	public ODatabaseDocumentTx getOrCreateDatabaseSession();
+	public ODatabaseDocumentTx getOrCreateDB();
 
 }

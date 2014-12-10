@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orientdb.orm.session.IOrientSessionFactory;
-import org.springframework.orientdb.session.impl.AbstractOrientDatabaseFactory;
+import org.springframework.orientdb.session.impl.OrientSessionFactory;
 import org.springframework.orientdb.session.impl.DatabaseConfiguration;
 import org.springframework.orientdb.session.impl.OrientSessionFactory;
 import org.springframework.orm.orient.OrientTransactionManager;
@@ -37,7 +37,7 @@ public class OrientAutoConfiguration {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected void configure(final AbstractOrientDatabaseFactory _factory) {
+	protected void configure(final OrientSessionFactory _factory) {
 		final DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration();
 		databaseConfiguration.setUrl(this.properties.getUrl());
 		databaseConfiguration.setUsername(this.properties.getUsername());

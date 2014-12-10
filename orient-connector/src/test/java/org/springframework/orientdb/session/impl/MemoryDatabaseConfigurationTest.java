@@ -43,7 +43,7 @@ public class MemoryDatabaseConfigurationTest {
 		final OrientSessionFactory documentDatabaseFactory = new OrientSessionFactory(new MemoryDatabaseConfiguration(
 		        "testDatabase"));
 
-		assertNotNull(documentDatabaseFactory.getOrCreateDatabaseSession());
+		assertNotNull(documentDatabaseFactory.getOrCreateDB());
 		documentDatabaseFactory.close();
 
 	}

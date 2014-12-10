@@ -36,6 +36,8 @@ public class DatabaseConfiguration {
 
 	private boolean	            autoInitializeCurrentThreadTransaction	= false;
 
+	private boolean	            autocreateDatabase	                   = true;
+
 	private Map<String, Object>	extraConfiguration	                   = Collections.emptyMap();
 
 	public DatabaseConfiguration() {
@@ -66,8 +68,16 @@ public class DatabaseConfiguration {
 		return this.username;
 	}
 
+	public boolean isAutocreateDatabase() {
+		return this.autocreateDatabase;
+	}
+
 	public boolean isAutoInitializeCurrentThreadTransaction() {
 		return this.autoInitializeCurrentThreadTransaction;
+	}
+
+	public void setAutocreateDatabase(final boolean _autocreateDatabase) {
+		this.autocreateDatabase = _autocreateDatabase;
 	}
 
 	public void setAutoInitializeCurrentThreadTransaction(final boolean _autoInitializeCurrentThreadTransaction) {
@@ -101,6 +111,6 @@ public class DatabaseConfiguration {
 	@Override
 	public String toString() {
 		return "DatabaseConfiguration [url=" + this.url + ", username=" + this.username + ", minPoolSize="
-		        + this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
+				+ this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
 	}
 }

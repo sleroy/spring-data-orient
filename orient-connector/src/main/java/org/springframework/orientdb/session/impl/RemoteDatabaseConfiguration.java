@@ -9,7 +9,7 @@ public class RemoteDatabaseConfiguration extends DatabaseConfiguration {
 	public RemoteDatabaseConfiguration(final String _url, final int port, final String _databaseName) {
 		this.setUsername("admin");
 		this.setPassword("admin");
-
+		this.setAutocreateDatabase(false);
 		this.setUrl(this.buildURL(_url, port, _databaseName));
 	}
 
