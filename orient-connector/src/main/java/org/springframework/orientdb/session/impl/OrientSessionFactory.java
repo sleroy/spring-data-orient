@@ -9,6 +9,7 @@ import org.springframework.orientdb.orm.session.IOrientSessionFactory;
 
 import com.orientechnologies.orient.core.config.OGlobalConfiguration;
 import com.orientechnologies.orient.core.db.ODatabase;
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
@@ -45,7 +46,17 @@ public class OrientSessionFactory<TDatabase extends ODatabaseDocumentTx> impleme
 
 	@Override
 	public TDatabase db() {
-		return (TDatabase) this.pool.acquire();
+		TDatabase db;
+		if (!ODatabaseRecordThreadLocal.INSTANCE.isDefined()) {
+			db = this.getOrCreateDB();
+			LOGGER.debug("acquire db from pool {}", db.hashCode());
+		} else {
+			db = (TDatabase) ODatabaseRecordThreadLocal.INSTANCE.get().getDatabaseOwner();
+			LOGGER.debug("use existing db {}", db.hashCode());
+		}
+
+		return db;
+
 	}
 
 	/*

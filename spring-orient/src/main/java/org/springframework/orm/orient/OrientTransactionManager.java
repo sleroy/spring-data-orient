@@ -87,6 +87,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 
 		ODatabaseDocumentTx db = tx.getDatabase();
 		if (db == null || db.isClosed()) {
+			log.debug("closing transaction, db.hashCode() = {}", tx.getDatabase().hashCode());
 			db = this.dbf.getOrCreateDB();
 			tx.setDatabase(db);
 			TransactionSynchronizationManager.bindResource(this.dbf, db);
@@ -191,7 +192,7 @@ public class OrientTransactionManager extends AbstractPlatformTransactionManager
 		final OrientTransaction tx = (OrientTransaction) status.getTransaction();
 		final ODatabaseDocumentTx db = tx.getDatabase();
 
-		log.debug("committing transaction, db.hashCode() = {}", db.hashCode());
+		log.debug("rolling back transaction, db.hashCode() = {}", db.hashCode());
 
 		db.rollback();
 	}
