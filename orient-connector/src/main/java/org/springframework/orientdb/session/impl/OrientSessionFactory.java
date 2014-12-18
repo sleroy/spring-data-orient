@@ -61,7 +61,7 @@ public class OrientSessionFactory<TDatabase extends ODatabaseDocumentTx> impleme
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.komea.product.eventory.database.conf.IOrientDbGraphSessionFactory
 	 * #getGraph()
@@ -75,7 +75,7 @@ public class OrientSessionFactory<TDatabase extends ODatabaseDocumentTx> impleme
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.komea.product.eventory.database.conf.IOrientDbGraphSessionFactory
 	 * #getGraph()
@@ -89,7 +89,7 @@ public class OrientSessionFactory<TDatabase extends ODatabaseDocumentTx> impleme
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.springframework.orm.orient.AbstractOrientDatabaseFactory#openDatabase
 	 * ()
@@ -137,9 +137,9 @@ public class OrientSessionFactory<TDatabase extends ODatabaseDocumentTx> impleme
 	 */
 	private final void createPool(final DatabaseConfiguration _configuration) {
 		LOGGER.debug("Configuration of the connexion pool min={}, max={}", _configuration.getMinPoolSize(),
-				_configuration.getMaxPoolSize());
+		        _configuration.getMaxPoolSize());
 		this.pool = new ODatabaseDocumentPool(_configuration.getUrl(), _configuration.getUsername(),
-				_configuration.getPassword());
+		        _configuration.getPassword());
 
 	}
 
