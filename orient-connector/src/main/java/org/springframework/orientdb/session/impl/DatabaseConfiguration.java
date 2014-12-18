@@ -34,7 +34,7 @@ public class DatabaseConfiguration {
 	/** The max pool size. */
 	private int	                maxPoolSize	                           = DEFAULT_MAX_POOL_SIZE;
 
-	private boolean	            autoInitializeCurrentThreadTransaction	= false;
+	private boolean	            autoInitializeCurrentThreadTransaction	= true;
 
 	private boolean	            autocreateDatabase	                   = true;
 
@@ -111,6 +111,6 @@ public class DatabaseConfiguration {
 	@Override
 	public String toString() {
 		return "DatabaseConfiguration [url=" + this.url + ", username=" + this.username + ", minPoolSize="
-				+ this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
+		        + this.minPoolSize + ", maxPoolSize=" + this.maxPoolSize + "]";
 	}
 }

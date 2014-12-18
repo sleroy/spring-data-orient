@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orientdb.orm.session.IOrientSessionFactory;
-import org.springframework.orientdb.session.impl.OrientSessionFactory;
 import org.springframework.orientdb.session.impl.DatabaseConfiguration;
 import org.springframework.orientdb.session.impl.OrientSessionFactory;
 import org.springframework.orm.orient.OrientTransactionManager;
@@ -44,6 +43,9 @@ public class OrientAutoConfiguration {
 		databaseConfiguration.setPassword(this.properties.getPassword());
 		databaseConfiguration.setMaxPoolSize(this.properties.getMaxPoolSize());
 		databaseConfiguration.setMinPoolSize(this.properties.getMinPoolSize());
+		databaseConfiguration.setAutocreateDatabase(this.properties.isAutoCreateDatabase());
+		databaseConfiguration.setAutoInitializeCurrentThreadTransaction(this.properties
+		        .isAutoInitializeCurrenThreadSession());
 		_factory.init(databaseConfiguration);
 	}
 }

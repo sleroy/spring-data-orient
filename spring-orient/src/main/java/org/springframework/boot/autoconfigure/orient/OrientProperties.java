@@ -12,9 +12,13 @@ public class OrientProperties {
 
 	private String	password;
 
-	private int	   minPoolSize	= DatabaseConfiguration.DEFAULT_MIN_POOL_SIZE;
+	private boolean	autoCreateDatabase	              = true;
 
-	private int	   maxPoolSize	= DatabaseConfiguration.DEFAULT_MAX_POOL_SIZE;
+	private boolean	autoInitializeCurrenThreadSession	= true;
+
+	private int	    minPoolSize	                      = DatabaseConfiguration.DEFAULT_MIN_POOL_SIZE;
+
+	private int	    maxPoolSize	                      = DatabaseConfiguration.DEFAULT_MAX_POOL_SIZE;
 
 	public int getMaxPoolSize() {
 		return this.maxPoolSize;
@@ -34,6 +38,22 @@ public class OrientProperties {
 
 	public String getUsername() {
 		return this.username;
+	}
+
+	public boolean isAutoCreateDatabase() {
+		return this.autoCreateDatabase;
+	}
+
+	public boolean isAutoInitializeCurrenThreadSession() {
+		return this.autoInitializeCurrenThreadSession;
+	}
+
+	public void setAutoCreateDatabase(final boolean _autoCreateDatabase) {
+		this.autoCreateDatabase = _autoCreateDatabase;
+	}
+
+	public void setAutoInitializeCurrenThreadSession(final boolean _autoInitializeCurrenThreadSession) {
+		this.autoInitializeCurrenThreadSession = _autoInitializeCurrenThreadSession;
 	}
 
 	public void setMaxPoolSize(final int maxPoolSize) {

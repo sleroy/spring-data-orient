@@ -13,7 +13,7 @@ import java.util.Random;
 public class TestDatabaseConfiguration extends MemoryDatabaseConfiguration {
 
 	public TestDatabaseConfiguration() {
-		super("database" + Long.toString(new Date().getTime()) + new Random().nextInt());
+		super("database" + Long.toString(new Date().getTime()) + "_R" + new Random().nextInt());
 		this.setAutoInitializeCurrentThreadTransaction(true);
 	}
 
