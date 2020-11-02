@@ -9,7 +9,7 @@
 		<spring.version>4.1.3.RELEASE</spring.version>
 		<spring.boot.version>1.2.0.RELEASE</spring.boot.version>
 		<orientdb.version>1.7.10</orientdb.version>
-		<spring.data.commons.version>1.9.1.RELEASE</spring.data.commons.version>
+		<spring.data.commons.version>1.13.23.RELEASE</spring.data.commons.version>
 		<jooq.version>3.5.0</jooq.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
