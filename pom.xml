@@ -13,7 +13,7 @@
 		<jooq.version>3.5.0</jooq.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<commonlang.version>3.3.2</commonlang.version>
+		<commonlang.version>3.11</commonlang.version>
 	</properties>
 
 	<scm>
